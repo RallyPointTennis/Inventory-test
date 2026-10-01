@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Rally Point jobs</title></head>
+<body style="margin:0;background:#fff;color:#1f2937;font:16px/1.45 Arial,sans-serif">
+<div style="background:#13294b;color:#fff;padding:16px"><b style="font-size:20px">Rally Point jobs</b> <span id="s" style="font-size:11px">Opening - one moment.</span></div>
+<script>
+var DOOR = 'https://script.google.com/macros/s/AKfycbyy3S64Z3nbJ3wonF1pw6maFz9FXZX1jo77xgyIOHdxL9P2cwiup0ReADAw59vPUY_J/exec';
+var k = new URLSearchParams(location.search).get('k');
+try { if (k) localStorage.setItem('rp_key', k); else k = localStorage.getItem('rp_key'); } catch (e) {}
+function stop(m) { document.getElementById('s').textContent = m; }
+if (!k) stop('This link is missing its key. Open the Jobs page from the sheet: RALLY POINT > Open the Jobs page.');
+else fetch(DOOR + '?fn=page&k=' + encodeURIComponent(k)).then(function (r) { return r.json(); }).then(function (r) {
+  if (!r.ok) return stop(r.error + '.');
+  document.open(); document.write(r.html); document.close();
+}, function () { stop('No signal, or the page could not be reached. Check the wifi and reload.'); });
+</script>
+</body></html>
