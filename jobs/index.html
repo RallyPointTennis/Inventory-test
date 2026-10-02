@@ -11,7 +11,7 @@ function stop(m) { document.getElementById('s').textContent = m; }
 function show(html, from) { window.RP_FROM = from; document.open(); document.write(html); document.close(); }
 if (!k) stop('This link is missing its key. Open the Jobs page from the sheet: RALLY POINT > Open the Jobs page.');
 // the kept copy is used only when it is a page that knows it was kept (it then checks the sheet again by itself)
-else if (c && c.k === k && c.html && c.html.indexOf('RP_FROM') > 0 && !q.get('fresh')) show(c.html, 'cache');
+else if (c && c.k === k && c.html && c.html.indexOf('RP_FROM') > 0 && !q.get('fresh')) document.addEventListener('DOMContentLoaded', function () { show(c.html, 'cache'); });
 else fetch(DOOR + '?fn=page&k=' + encodeURIComponent(k)).then(function (r) { return r.json(); }).then(function (r) {
   if (!r.ok) return stop(r.error + '.');
   try { localStorage.setItem(P + 'page', JSON.stringify({k: k, html: r.html})); } catch (e) {}
