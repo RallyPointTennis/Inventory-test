@@ -3,14 +3,19 @@
 <body style="margin:0;background:#fff;color:#1f2937;font:16px/1.45 Arial,sans-serif">
 <div style="background:#13294b;color:#fff;padding:16px"><b style="font-size:20px">Rally Point jobs</b> <span id="s" style="font-size:11px">Opening - one moment.</span></div>
 <script>
-var DOOR = 'https://script.google.com/macros/s/AKfycbyy3S64Z3nbJ3wonF1pw6maFz9FXZX1jo77xgyIOHdxL9P2cwiup0ReADAw59vPUY_J/exec';
-var k = new URLSearchParams(location.search).get('k');
-try { if (k) localStorage.setItem('rpt_key', k); else k = localStorage.getItem('rpt_key'); } catch (e) {}
+var DOOR = 'https://script.google.com/macros/s/AKfycbyy3S64Z3nbJ3wonF1pw6maFz9FXZX1jo77xgyIOHdxL9P2cwiup0ReADAw59vPUY_J/exec', P = 'rpt_';
+var q = new URLSearchParams(location.search), k = q.get('k'), c = null;
+try { if (k) localStorage.setItem(P + 'key', k); else k = localStorage.getItem(P + 'key'); } catch (e) {}
+try { c = JSON.parse(localStorage.getItem(P + 'page') || 'null'); } catch (e) {}
 function stop(m) { document.getElementById('s').textContent = m; }
+function show(html, from) { window.RP_FROM = from; document.open(); document.write(html); document.close(); }
 if (!k) stop('This link is missing its key. Open the Jobs page from the sheet: RALLY POINT > Open the Jobs page.');
+// the kept copy is used only when it is a page that knows it was kept (it then checks the sheet again by itself)
+else if (c && c.k === k && c.html && c.html.indexOf('RP_FROM') > 0 && !q.get('fresh')) show(c.html, 'cache');
 else fetch(DOOR + '?fn=page&k=' + encodeURIComponent(k)).then(function (r) { return r.json(); }).then(function (r) {
   if (!r.ok) return stop(r.error + '.');
-  document.open(); document.write(r.html); document.close();
+  try { localStorage.setItem(P + 'page', JSON.stringify({k: k, html: r.html})); } catch (e) {}
+  show(r.html, 'door');
 }, function () { stop('No signal, or the page could not be reached. Check the wifi and reload.'); });
 </script>
 </body></html>
