@@ -44,7 +44,7 @@ function say(m) { W.innerHTML = '<p class="q">' + m + '</p>'; }
 function steps(why) {
   W.innerHTML = (why || '') + '<h2>Scan the key</h2><p>This ' + IT + ' has not been let in yet.</p>' +
     '<div class="step"><i>1</i><div><b>At the desk computer</b>open the sheet Rally Point Stock.</div></div>' +
-    '<div class="step"><i>2</i><div><b>Menu Rally Point</b>then Open the Jobs page.</div></div>' +
+    '<div class="step"><i>2</i><div><b>Menu Rally Point</b>then Keys and devices.</div></div>' +
     (!TOUCH ? '<div class="step"><i>3</i><div><b>Click the blue button</b>Open the Jobs page on this computer.</div></div>'
       : CAN ? '<div class="step"><i>3</i><div><b>Tap Scan the Key</b>below, and point this phone at the square.</div></div>'
       : '<div class="step"><i>3</i><div><b>Point this phone\'s camera</b>at the square, and tap the link it shows.</div></div>') +
@@ -78,7 +78,7 @@ function scan() {
   }, function () { shut(); steps(band('The camera did not open', 'Allow the camera for this page, or use this phone\'s own camera app: point it at the square and tap the link.')); });
 }
 function refused(m) {
-  if (m === OFF) return steps(band('This ' + IT + ' was turned off', 'It was taken off the list at the desk. To use it again, scan a new key.'));
+  if (m === OFF) return steps(band('This ' + IT + ' was turned off', 'It was turned off at the desk. Ask there to have it turned back on.'));
   if (m === USED) return steps(band('That key is used up', 'A key works once, for 10 minutes. Ask for a new one at the desk computer.'));
   if (m === NONE) { put('page', ''); return steps(''); }   // the token is kept: if this device is put back on the list it works again
   say(m + '.');
@@ -91,7 +91,7 @@ function post(body, ok, again) {
 function ask() {
   W.innerHTML = '<h2>Whose ' + IT + ' is this?</h2><p class="q">So the list at the desk can tell the devices apart. Like: Jenna\'s phone.</p>' +
     '<input class="in" id="n" maxlength="40" autocomplete="off" placeholder="Type a name">' +
-    '<button class="go" id="ok">Let This ' + (TOUCH ? 'Phone' : 'Computer') + ' In</button><button id="sk">Skip</button>';
+    '<button class="go" id="ok">Add This ' + (TOUCH ? 'Phone' : 'Computer') + '</button><button id="sk">Skip</button>';
   document.getElementById('ok').onclick = function () { enrol(document.getElementById('n').value); };
   document.getElementById('sk').onclick = function () { enrol(''); };
   document.getElementById('n').onkeydown = function (e) { if (e.key === 'Enter') enrol(this.value); };
