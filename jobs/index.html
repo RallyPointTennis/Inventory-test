@@ -102,7 +102,7 @@ function enrol(name) {
 }
 function open() {
   // the kept copy is used only when it is a page that knows it was kept (it then checks the sheet again by itself), and only one this doorway's own kind (v: 1)
-  if (c && c.v === 1 && c.html && c.html.indexOf('RP_FROM') > 0 && !q.get('fresh')) return show(c.html, 'cache');
+  if (c && c.v === 1 && c.html && c.html.indexOf('RP_FROM') > 0 && !q.get('fresh')) { var kept = c.html; if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { show(kept, 'cache'); }); else show(kept, 'cache'); return; }   // build 31: drawn after the doorway has loaded - drawn while it loads, the page went in UNDER the doorway's own "Opening - one moment." line (the 10/2 fix, lost in build 28)
   say('Opening - one moment.');
   fetch(DOOR + '?fn=page&t=' + encodeURIComponent(tok)).then(function (r) { return r.json(); }).then(function (r) {
     if (!r.ok) return refused(r.error);
